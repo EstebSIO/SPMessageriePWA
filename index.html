@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<link rel="manifest" href="manifest.webmanifest">
+		<title>PWA</title>
+	</head>
+	<body>
+		<div class="container">
+			<div id="app">
+				
+
+			</div>
+			<form >
+				<div class="row">
+					<div class="col-25">
+						<label>Prénom</label>
+					</div>
+					<div class="col-75">
+						<input type="text" id="prenom" required="">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-25" >
+						<label for="amount">Message</label>
+					</div>
+					<div class="col-75">
+						<textarea id="message" rows="10" cols="50" required=""></textarea>
+					</div>
+					<div class="row">
+						<button id="form" type="submit">Envoyer</button>
+					</div>
+				</form>
+					<script src='sw.js'></script>
+				<script>
+					if('serviceWorker' in navigator) {
+						navigator.serviceWorker.register('sw.js');
+					}
+				</script>
+				<script>
+					let prenom = document.getElementById('prenom');
+					let message = document.getElementById('message');
+					let form = document.getElementById('form');
+					let lprenom = localStorage.getItem('prenom');
+
+					if(lprenom){
+						prenom.value=lprenom;
+					}
+
+					let app= document.getElementById('app');
+
+					let lmessages = JSON.parse(localStorage.getItem('messages'));
+					if(lmessages){
+						lmessages.forEach(message => {
+							let div = document.createElement('DIV');
+							div.innerHTML= message.prenom+' : '+message.message;
+							app.appendChild(div);
+						});
+					}
+					form.addEventListener('click', (e)=>{
+						alert('ok');
+						e.preventDefault();
+						let lmessages = JSON.parse(localStorage.getItem('messages'))
+						createMessage(lmessages);
+					})
+				</script>
+			</div>
+		</body>
+	</html>
